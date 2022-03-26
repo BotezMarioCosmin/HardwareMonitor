@@ -21,32 +21,27 @@ namespace HardwareMonitor
         int i, a = 0;
         float flt, y;
         string ramsize, name;
-        PerformanceCounter CPU = new PerformanceCounter("Processor", "% Processor Time", "_Total"); //oggetto, contatore, istanza
+
+        string[] enHome = { "Model", "Base clock", "Usage", "Available", "Total", "Used", "Activity", "Used" };
+        string[] itHome = { "Modello", "Frequenza base", "Utilizzo", "Disponibile", "Totale", "Utilizzata", "Attività", "Utilizzato" };
+
+        PerformanceCounter CPU = new PerformanceCounter("Processore", "% Tempo Processore", "_Total"); //oggetto, contatore, istanza
         PerformanceCounter CPUfreq = new PerformanceCounter("Informazioni Processore", "Frequenza Processore", "_Total");
-        PerformanceCounter RAM = new PerformanceCounter("Memory", "Available MBytes"); //oggetto, contatore
-        
+        PerformanceCounter RAM = new PerformanceCounter("Memoria", "MByte disponibili"); //oggetto, contatore
+        PerformanceCounter HDD = new PerformanceCounter("Disco fisico", "% Tempo disco", "_Total");
+
         public Form1()
         {
             InitializeComponent();
-
-            ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
-            ManagementObjectCollection results = searcher.Get();
-            flt = ramtotGB(ramtotMB());
-            lbltotal.Hide();
-            lbltotal.Text = Convert.ToString("Total: " + flt + " GB");//RAM totale
-
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //this.Hide();
-            /*Startup.Left = this.Left;
-            Startup.Top = this.Top;
-            Startup.Size = this.Size;*/
             Startup.ShowDialog();
             this.Show();
+            timer1.Start();
+
+            lbltotal.Text = Convert.ToString(systemLanguage(enHome, itHome, 4)) + " " + totram() + " GB";//RAM totale
 
             RegistryKey processor_name = Registry.LocalMachine.OpenSubKey(@"Hardware\Description\System\CentralProcessor\0", RegistryKeyPermissionCheck.ReadSubTree);
 
@@ -54,7 +49,6 @@ namespace HardwareMonitor
             {
                 if (processor_name.GetValue("ProcessorNameString") != null)
                 {
-                    lblmodel.Hide();
                     lblmodel.Text = (string)processor_name.GetValue("ProcessorNameString");
                 }
             }
@@ -70,29 +64,44 @@ namespace HardwareMonitor
             else
                 circularProgressBar1.ProgressColor = Color.White;
 
-
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            int cpupercent, ramused, rampercent;
+            int cpupercent, ramused, rampercent, hddpercent;
+            hddpercent = (int)HDD.NextValue();
             cpupercent = (int)CPU.NextValue();
-            ramused = (int)RAM.NextValue();
-            lblusage.Text = "Usage: " + cpupercent + " %"; //CPU%
+            //ramused = (int)RAM.NextValue();
+
+            //CPU
+            lblbaseclock.Text = systemLanguage(enHome, itHome, 1) + " " + Convert.ToString(CPUfreq.NextValue()) + " MHz" + " (Boost Excluded)";
+            lblusage.Text = systemLanguage(enHome, itHome, 2) + " " + cpupercent + " %"; //CPU%
             circularProgressBar1.Value = cpupercent;
             circularProgressBar1.Text = cpupercent + "%";
-            lblavailable.Text = "Available: " + ramused + " MB"; //RAM%
 
-            Process proc = Process.GetCurrentProcess();
-            lblbaseclock.Text = "Max Clock: " + Convert.ToString(CPUfreq.NextValue()) + " MHz" + " (Boost Excluded)";
+            //RAM
+            float Ramgb = ramtotMB();//senza questo il form lagga
 
-            lblused.Text = "Used: " + Convert.ToString(ramtotMB() - (ramused*1024/1000)) + " MB"; //RAM utilizzata + conversione
-            rampercent = 100 - (ramused * 100 / (int)ramtotMB());
+            ramused = (int)RAM.NextValue();
+            lblavailable.Text = systemLanguage(enHome, itHome, 3) + " " + ramused + " MB"; //RAM%                       
+            lblused.Text = systemLanguage(enHome, itHome, 5) + " " + Convert.ToString(Ramgb - (ramused * 1024 / 1000)) + " MB"; //RAM utilizzata + conversione
+            rampercent = 100 - (ramused * 100 / (int)Ramgb);
             circularProgressBar2.Value = rampercent;
             circularProgressBar2.Text = rampercent + "%";
+
+            //HDD
+            if (hddpercent > 100)
+            { 
+                hddpercent = 100;//per qualche strano motivo la percentuale supera il 100%
+            }
+            circularProgressBar3.Value = hddpercent;
+            circularProgressBar3.Text = hddpercent + "%";
+            lblhddactivity.Text = systemLanguage(enHome, itHome, 6)  + " " + Convert.ToString(hddpercent) + " %";//HDD%
+            lblhddused.Text = systemLanguage(enHome, itHome, 7) + " " + " GB";
+            
         }
 
-        private void btnINFO_Click(object sender, EventArgs e)
+        private void btnINFO_Click(object sender, EventArgs e)// informazioni aggiuntive CPU
         {
             SelectQuery Sq = new SelectQuery("Win32_Processor");
             ManagementObjectSearcher objOSDetails = new ManagementObjectSearcher(Sq);
@@ -115,24 +124,16 @@ namespace HardwareMonitor
             MessageBox.Show(sb.ToString());
         }
 
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-            /*float CPUstat = CPU.NextValue();
-            float RAMstat = RAM.NextValue();
-            circularProgressBar1.Value = (int)CPUstat;
-            circularProgressBar1.Text = string.Format("{0:0.00}%", CPUstat);
-            circularProgressBar2.Value = (int)RAMstat;
-            circularProgressBar2.Text = string.Format("{0:0.00}%", RAMstat);*/
-        }
+        //FUNZIONI
 
         public void hideHome()//funzione che nasconde la Home
         {
             menuStrip1.Hide();
-            label10.Hide();
+            lblhddused.Hide();
             lblused.Hide();
             lblusage.Hide();
             lblavailable.Hide();
-            label5.Hide();
+            lblhddactivity.Hide();
             lblbaseclock.Hide();
             lblmodel.Hide();
             lbltotal.Hide();
@@ -149,11 +150,11 @@ namespace HardwareMonitor
         public void showHome()//funzione che mostra la Home
         {
             menuStrip1.Show();
-            label10.Show();
+            lblhddused.Show();
             lblused.Show();
             lblusage.Show();
             lblavailable.Show();
-            label5.Show();
+            lblhddactivity.Show();
             lblbaseclock.Show();
             lblmodel.Show();
             lbltotal.Show();
@@ -183,25 +184,6 @@ namespace HardwareMonitor
             }
         }
 
-
-        private void StartupTimer_Tick(object sender, EventArgs e)
-        {
-           
-            hideHome();
-            progressBar1.Step = 1;
-            progressBar1.PerformStep();
-            if (progressBar1.Value == 100)
-            {
-                StartupTimer.Stop();        
-                //MessageBox.Show("ciao");
-                timer1.Enabled = true;
-                progressBar1.Hide();
-                label1.Hide();
-                showHome();
-            }
-
-        }
-
         private void informazioniToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (a == 0)
@@ -221,7 +203,7 @@ namespace HardwareMonitor
         {
             this.Hide();
             SettingsForm SettingsForm = new SettingsForm();
-            SettingsForm.ShowDialog();
+            SettingsForm.Show();
             SettingsForm.Left = this.Left;
             SettingsForm.Top = this.Top;
             SettingsForm.Size = this.Size;
@@ -255,7 +237,7 @@ namespace HardwareMonitor
 
         public float ramtotMB()//estrae la quantità totale di RAM (MB) utilizzabile dal sistema
         {
-            ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");
+            ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");//LENTOOO
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
             ManagementObjectCollection results = searcher.Get();
 
@@ -281,6 +263,22 @@ namespace HardwareMonitor
             return f;
         }
 
+        public string systemLanguage(string[] eng, string[] ita, int n) // lingua di sistema
+        {
+            if (rdbtnita.Checked == true)
+            {
+                return ita[n];
+            }
+            return eng[n];
+        }
 
+        public float totram()
+        {
+            ObjectQuery wql = new ObjectQuery("SELECT * FROM Win32_OperatingSystem");//LENTOOOOO
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(wql);
+            ManagementObjectCollection results = searcher.Get();
+            flt = ramtotGB(ramtotMB());
+            return flt;
+        }
     }
 }

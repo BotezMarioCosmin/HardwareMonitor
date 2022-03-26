@@ -29,20 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.circularProgressBar1 = new CircularProgressBar.CircularProgressBar();
             this.CPUcounter = new System.Diagnostics.PerformanceCounter();
             this.circularProgressBar2 = new CircularProgressBar.CircularProgressBar();
-            this.circularProgressBar3 = new CircularProgressBar.CircularProgressBar();
             this.RAMcounter = new System.Diagnostics.PerformanceCounter();
-            this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.label10 = new System.Windows.Forms.Label();
-            this.StartupTimer = new System.Windows.Forms.Timer(this.components);
+            this.lblhddused = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.impostazioniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.informazioniToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
             this.lblmodel = new System.Windows.Forms.Label();
             this.lbltotal = new System.Windows.Forms.Label();
             this.lblHDD = new System.Windows.Forms.Label();
@@ -53,8 +49,11 @@
             this.lblusage = new System.Windows.Forms.Label();
             this.lblavailable = new System.Windows.Forms.Label();
             this.btnINFO = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblhddactivity = new System.Windows.Forms.Label();
             this.btncpu = new System.Windows.Forms.Button();
+            this.circularProgressBar3 = new CircularProgressBar.CircularProgressBar();
+            this.rdbtneng = new System.Windows.Forms.RadioButton();
+            this.rdbtnita = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.CPUcounter)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RAMcounter)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -68,7 +67,7 @@
             // circularProgressBar1
             // 
             this.circularProgressBar1.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
-            this.circularProgressBar1.AnimationSpeed = 750;
+            this.circularProgressBar1.AnimationSpeed = 100;
             this.circularProgressBar1.BackColor = System.Drawing.Color.Transparent;
             this.circularProgressBar1.Cursor = System.Windows.Forms.Cursors.Default;
             this.circularProgressBar1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -141,65 +140,21 @@
             this.circularProgressBar2.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
             this.circularProgressBar2.Value = 68;
             // 
-            // circularProgressBar3
-            // 
-            this.circularProgressBar3.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
-            this.circularProgressBar3.AnimationSpeed = 500;
-            this.circularProgressBar3.BackColor = System.Drawing.Color.Transparent;
-            this.circularProgressBar3.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.circularProgressBar3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.circularProgressBar3.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.circularProgressBar3.InnerMargin = 2;
-            this.circularProgressBar3.InnerWidth = -1;
-            this.circularProgressBar3.Location = new System.Drawing.Point(850, 386);
-            this.circularProgressBar3.Margin = new System.Windows.Forms.Padding(2);
-            this.circularProgressBar3.MarqueeAnimationSpeed = 1000;
-            this.circularProgressBar3.Name = "circularProgressBar3";
-            this.circularProgressBar3.OuterColor = System.Drawing.Color.Gray;
-            this.circularProgressBar3.OuterMargin = -25;
-            this.circularProgressBar3.OuterWidth = 26;
-            this.circularProgressBar3.ProgressColor = System.Drawing.Color.Red;
-            this.circularProgressBar3.ProgressWidth = 15;
-            this.circularProgressBar3.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
-            this.circularProgressBar3.Size = new System.Drawing.Size(125, 125);
-            this.circularProgressBar3.StartAngle = 270;
-            this.circularProgressBar3.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.circularProgressBar3.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            this.circularProgressBar3.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            this.circularProgressBar3.SubscriptText = "";
-            this.circularProgressBar3.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            this.circularProgressBar3.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
-            this.circularProgressBar3.SuperscriptText = "";
-            this.circularProgressBar3.TabIndex = 16;
-            this.circularProgressBar3.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
-            this.circularProgressBar3.Value = 68;
-            // 
             // RAMcounter
             // 
             this.RAMcounter.CategoryName = "Memory";
             this.RAMcounter.CounterName = "% committed bytes in use";
             // 
-            // timer2
+            // lblhddused
             // 
-            this.timer2.Interval = 500;
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(151, 467);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(75, 25);
-            this.label10.TabIndex = 17;
-            this.label10.Text = "label10";
-            // 
-            // StartupTimer
-            // 
-            this.StartupTimer.Enabled = true;
-            this.StartupTimer.Interval = 25;
-            this.StartupTimer.Tick += new System.EventHandler(this.StartupTimer_Tick);
+            this.lblhddused.AutoSize = true;
+            this.lblhddused.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblhddused.Location = new System.Drawing.Point(151, 467);
+            this.lblhddused.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblhddused.Name = "lblhddused";
+            this.lblhddused.Size = new System.Drawing.Size(58, 25);
+            this.lblhddused.TabIndex = 17;
+            this.lblhddused.Text = "Used";
             // 
             // menuStrip1
             // 
@@ -232,27 +187,6 @@
             this.informazioniToolStripMenuItem.Size = new System.Drawing.Size(136, 32);
             this.informazioniToolStripMenuItem.Text = "Informazioni";
             this.informazioniToolStripMenuItem.Click += new System.EventHandler(this.informazioniToolStripMenuItem_Click);
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(346, 290);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(2);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(302, 19);
-            this.progressBar1.TabIndex = 27;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 29.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(313, 213);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(366, 57);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "System Viewer";
             // 
             // lblmodel
             // 
@@ -367,16 +301,16 @@
             this.btnINFO.UseVisualStyleBackColor = false;
             this.btnINFO.Click += new System.EventHandler(this.btnINFO_Click);
             // 
-            // label5
+            // lblhddactivity
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(152, 437);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(64, 25);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "label5";
+            this.lblhddactivity.AutoSize = true;
+            this.lblhddactivity.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblhddactivity.Location = new System.Drawing.Point(152, 437);
+            this.lblhddactivity.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblhddactivity.Name = "lblhddactivity";
+            this.lblhddactivity.Size = new System.Drawing.Size(74, 25);
+            this.lblhddactivity.TabIndex = 8;
+            this.lblhddactivity.Text = "Activity";
             // 
             // btncpu
             // 
@@ -389,12 +323,73 @@
             this.btncpu.UseVisualStyleBackColor = true;
             this.btncpu.Click += new System.EventHandler(this.btncpu_Click);
             // 
+            // circularProgressBar3
+            // 
+            this.circularProgressBar3.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
+            this.circularProgressBar3.AnimationSpeed = 100;
+            this.circularProgressBar3.BackColor = System.Drawing.Color.Transparent;
+            this.circularProgressBar3.Cursor = System.Windows.Forms.Cursors.Default;
+            this.circularProgressBar3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.circularProgressBar3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.circularProgressBar3.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.circularProgressBar3.InnerMargin = 2;
+            this.circularProgressBar3.InnerWidth = -1;
+            this.circularProgressBar3.Location = new System.Drawing.Point(850, 386);
+            this.circularProgressBar3.Margin = new System.Windows.Forms.Padding(2);
+            this.circularProgressBar3.MarqueeAnimationSpeed = 2000;
+            this.circularProgressBar3.Name = "circularProgressBar3";
+            this.circularProgressBar3.OuterColor = System.Drawing.Color.Gray;
+            this.circularProgressBar3.OuterMargin = -25;
+            this.circularProgressBar3.OuterWidth = 26;
+            this.circularProgressBar3.ProgressColor = System.Drawing.Color.BlueViolet;
+            this.circularProgressBar3.ProgressWidth = 15;
+            this.circularProgressBar3.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.circularProgressBar3.Size = new System.Drawing.Size(125, 125);
+            this.circularProgressBar3.StartAngle = 270;
+            this.circularProgressBar3.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.circularProgressBar3.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.circularProgressBar3.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            this.circularProgressBar3.SubscriptText = "";
+            this.circularProgressBar3.SuperscriptColor = System.Drawing.Color.Red;
+            this.circularProgressBar3.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.circularProgressBar3.SuperscriptText = "";
+            this.circularProgressBar3.TabIndex = 41;
+            this.circularProgressBar3.Text = "N/D%";
+            this.circularProgressBar3.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
+            this.circularProgressBar3.Value = 68;
+            // 
+            // rdbtneng
+            // 
+            this.rdbtneng.AutoSize = true;
+            this.rdbtneng.Checked = true;
+            this.rdbtneng.Location = new System.Drawing.Point(12, 60);
+            this.rdbtneng.Name = "rdbtneng";
+            this.rdbtneng.Size = new System.Drawing.Size(75, 21);
+            this.rdbtneng.TabIndex = 42;
+            this.rdbtneng.TabStop = true;
+            this.rdbtneng.Text = "English";
+            this.rdbtneng.UseVisualStyleBackColor = true;
+            // 
+            // rdbtnita
+            // 
+            this.rdbtnita.AutoSize = true;
+            this.rdbtnita.Location = new System.Drawing.Point(12, 99);
+            this.rdbtnita.Name = "rdbtnita";
+            this.rdbtnita.Size = new System.Drawing.Size(74, 21);
+            this.rdbtnita.TabIndex = 43;
+            this.rdbtnita.TabStop = true;
+            this.rdbtnita.Text = "Italiano";
+            this.rdbtnita.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MidnightBlue;
             this.ClientSize = new System.Drawing.Size(982, 553);
+            this.Controls.Add(this.rdbtnita);
+            this.Controls.Add(this.rdbtneng);
+            this.Controls.Add(this.circularProgressBar3);
             this.Controls.Add(this.btncpu);
             this.Controls.Add(this.btnINFO);
             this.Controls.Add(this.lblmodel);
@@ -406,16 +401,14 @@
             this.Controls.Add(this.lblRAM);
             this.Controls.Add(this.lblusage);
             this.Controls.Add(this.lblavailable);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.circularProgressBar3);
-            this.Controls.Add(this.label5);
+            this.Controls.Add(this.lblhddused);
+            this.Controls.Add(this.lblhddactivity);
             this.Controls.Add(this.circularProgressBar1);
             this.Controls.Add(this.circularProgressBar2);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.SystemColors.MenuHighlight;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -435,16 +428,11 @@
         private CircularProgressBar.CircularProgressBar circularProgressBar1;
         private System.Diagnostics.PerformanceCounter CPUcounter;
         private CircularProgressBar.CircularProgressBar circularProgressBar2;
-        private CircularProgressBar.CircularProgressBar circularProgressBar3;
         private System.Diagnostics.PerformanceCounter RAMcounter;
-        private System.Windows.Forms.Timer timer2;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Timer StartupTimer;
+        private System.Windows.Forms.Label lblhddused;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem impostazioniToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem informazioniToolStripMenuItem;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblmodel;
         private System.Windows.Forms.Label lbltotal;
         private System.Windows.Forms.Label lblHDD;
@@ -455,8 +443,11 @@
         private System.Windows.Forms.Label lblusage;
         private System.Windows.Forms.Label lblavailable;
         private System.Windows.Forms.Button btnINFO;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblhddactivity;
         private System.Windows.Forms.Button btncpu;
+        private CircularProgressBar.CircularProgressBar circularProgressBar3;
+        private System.Windows.Forms.RadioButton rdbtneng;
+        private System.Windows.Forms.RadioButton rdbtnita;
     }
 }
 
